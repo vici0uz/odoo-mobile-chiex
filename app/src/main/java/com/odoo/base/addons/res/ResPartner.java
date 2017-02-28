@@ -74,6 +74,9 @@ public class ResPartner extends OModel {
     OColumn child_ids = new OColumn("Contacts", ResPartner.class, OColumn.RelationType.OneToMany)
             .setRelatedColumn("parent_id");
 
+    // Custom
+    OColumn cid = new OColumn("Certficate Number", OVarchar.class).setSize(15);
+
     public ResPartner(Context context, OUser user) {
         super(context, "res.partner", user);
         setHasMailChatter(true);

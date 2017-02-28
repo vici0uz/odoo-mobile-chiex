@@ -46,6 +46,12 @@
                 app:fieldTextAppearance="?android:textAppearanceMedium"
                 app:iconResource="@drawable/ic_action_message"></odoo.controls.OField>
 
+            <odoo.controls.OField
+                android:id="@+id/cid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:fieldName="cid"
+                app:fieldTextAppearance="?android:textAppearanceMedium"/>
             <View
                 style="@style/ViewSeparator"
                 android:layout_marginLeft="72dp" />
