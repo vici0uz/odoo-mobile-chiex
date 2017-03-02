@@ -34,7 +34,8 @@
                 app:fieldLabelColor="@color/theme_secondary"
                 app:fieldName="website"
                 app:fieldTextAppearance="?android:textAppearanceMedium"
-                app:iconResource="@drawable/ic_action_universe"></odoo.controls.OField>
+                app:iconResource="@drawable/ic_action_universe"
+                android:visibility="gone"/>
 
 
             <odoo.controls.OField
@@ -44,13 +45,20 @@
                 app:fieldLabelColor="@color/theme_secondary"
                 app:fieldName="email"
                 app:fieldTextAppearance="?android:textAppearanceMedium"
-                app:iconResource="@drawable/ic_action_message"></odoo.controls.OField>
+                app:iconResource="@drawable/ic_action_message"/>
 
             <odoo.controls.OField
                 android:id="@+id/cid"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:fieldName="cid"
+                app:fieldTextAppearance="?android:textAppearanceMedium"/>
+
+            <odoo.controls.OField
+                android:id="@+id/vat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:fieldName="vat"
                 app:fieldTextAppearance="?android:textAppearanceMedium"/>
             <View
                 style="@style/ViewSeparator"
