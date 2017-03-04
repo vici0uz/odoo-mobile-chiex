@@ -62,9 +62,3 @@ proguard/
 .navigation/
 
 # Custom
-*.iml
-.idea/
-.gradle
-*.iws
-*.ipr
-*.swp

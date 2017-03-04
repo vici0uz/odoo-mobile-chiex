@@ -75,7 +75,7 @@ public class ResPartner extends OModel {
             .setRelatedColumn("parent_id");
 
     // Custom
-    OColumn cid = new OColumn("Certficate Number", OVarchar.class).setSize(15);
+    OColumn cid = new OColumn("Certificate Number", OVarchar.class).setSize(15);
     OColumn vat = new OColumn("RUC", OVarchar.class).setSize(16);
 
     public ResPartner(Context context, OUser user) {
