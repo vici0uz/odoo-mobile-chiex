@@ -19,11 +19,15 @@
  */
 package com.odoo.addons.customers;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -71,6 +75,7 @@ public class CustomerDetails extends OdooCompatActivity
     private CollapsingToolbarLayout collapsingToolbarLayout;
     private Toolbar toolbar;
     private Customers.Type partnerType = Customers.Type.Customer;
+    private int MY_PERMISSIONS_REQUEST_CALL = 911;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -174,10 +179,69 @@ public class CustomerDetails extends OdooCompatActivity
                 IntentUtils.requestMessage(this, record.getString("email"));
                 break;
             case R.id.phone_number:
-                IntentUtils.requestCall(this, record.getString("phone"));
+
+                // TODO: 06/03/17 Separar en una funcion - Manejar "never ask again" 
+                if (ContextCompat.checkSelfPermission(CustomerDetails.this,
+                        Manifest.permission.CALL_PHONE)
+                        != PackageManager.PERMISSION_GRANTED) {
+
+                    // Should we show an explanation?
+                    System.out.println("LOL SE EJECUTA PAPACHO");
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(CustomerDetails.this,
+                            Manifest.permission.CALL_PHONE)) {
+
+                        // Show an expanation to the user *asynchronously* -- don't block
+                        // this thread waiting for the user's response! After the user
+                        // sees the explanation, try again to request the permission.
+
+                    } else {
+
+                        // No explanation needed, we can request the permission.
+                        ActivityCompat.requestPermissions(CustomerDetails.this,
+                                new String[]{Manifest.permission.CALL_PHONE},
+                                MY_PERMISSIONS_REQUEST_CALL);
+
+                        // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                        // app-defined int constant. The callback method gets the
+                        // result of the request.
+                    }
+                }
+                if(ContextCompat.checkSelfPermission(CustomerDetails.this,
+                        Manifest.permission.CALL_PHONE)
+                        == PackageManager.PERMISSION_GRANTED) {
+                    IntentUtils.requestCall(this, record.getString("phone"));
+                }
                 break;
             case R.id.mobile_number:
-                IntentUtils.requestCall(this, record.getString("mobile"));
+                if (ContextCompat.checkSelfPermission(CustomerDetails.this,
+                        Manifest.permission.CALL_PHONE)
+                        != PackageManager.PERMISSION_GRANTED) {
+
+                    // Should we show an explanation?
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(CustomerDetails.this,
+                            Manifest.permission.CALL_PHONE)) {
+
+                        // Show an expanation to the user *asynchronously* -- don't block
+                        // this thread waiting for the user's response! After the user
+                        // sees the explanation, try again to request the permission.
+
+                    } else {
+
+                        // No explanation needed, we can request the permission.
+
+                        ActivityCompat.requestPermissions(CustomerDetails.this,
+                                new String[]{Manifest.permission.CALL_PHONE},
+                                MY_PERMISSIONS_REQUEST_CALL);
+
+                        // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                        // app-defined int constant. The callback method gets the
+                        // result of the request.
+                    }
+                }
+                if(ContextCompat.checkSelfPermission(CustomerDetails.this,
+                        Manifest.permission.CALL_PHONE)
+                        == PackageManager.PERMISSION_GRANTED)
+                    IntentUtils.requestCall(this, record.getString("mobile"));
                 break;
             case R.id.captureImage:
                 fileManager.requestForFile(OFileManager.RequestType.IMAGE_OR_CAPTURE_IMAGE);

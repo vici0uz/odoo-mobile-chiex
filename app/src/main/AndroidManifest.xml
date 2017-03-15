@@ -102,6 +102,25 @@
         <activity
             android:name="com.odoo.addons.customers.CustomerDetails"
             android:windowSoftInputMode="adjustPan" />
+        
+        <!--CAJA-->
+        <provider
+            android:name="com.odoo.addons.caja_chica.providers.WCajaSyncProvider"
+            android:authorities="com.odoo.addons.caja_chica.content.sync.caja_chica"
+            android:label="Registros de Caja"
+            android:multiprocess="true"/>
+        
+        <service android:name="com.odoo.addons.caja_chica.services.CajaSyncService"
+            android:exported="true"
+            android:process=":sync_caja">
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter"/>
+            </intent-filter>
+
+            <meta-data
+                android:name="android.content.SyncAdapter"
+                android:resource="@xml/caja_sync_adapter"/>
+        </service>
     </application>
 
 </manifest>

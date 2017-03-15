@@ -272,7 +272,6 @@ public class Customers extends BaseFragment implements ISyncStatusObserverListen
         IntentUtils.startActivity(getActivity(), CustomerDetails.class, data);
     }
 
-
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         ODataRow row = OCursorUtils.toDatarow((Cursor) mAdapter.getItem(position));
