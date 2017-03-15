@@ -31,7 +31,8 @@ import java.util.List;
 // TODO: 15/03/17 Agregar distinto color y un icono caja abierta
 // TODO: 15/03/17 Agregar funcion al mantener apretado mucho tiempo longclick
 // TODO: 15/03/17 Agregar el menu estado cuentas bancos
-
+// TODO: 15/03/17 Mover la funcionalidad a framework taller777 
+// TODO: 15/03/17 Ocultar de la misma forma que aqui el fabButton en framework taller777 
 
 public class CajaChica extends BaseFragment implements
         OCursorListAdapter.OnViewBindListener, SwipeRefreshLayout.OnRefreshListener, LoaderManager.LoaderCallbacks<Cursor> {
