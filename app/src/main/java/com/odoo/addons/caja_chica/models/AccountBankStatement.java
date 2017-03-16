@@ -24,6 +24,7 @@ public class AccountBankStatement extends OModel{
                 .addSelection("open", "Open")
                 .addSelection("confirm", "Closed");
         OColumn date = new OColumn("Date", ODate.class);
+        OColumn line_ids = new OColumn("Records", AccountBankStatementLine.class, OColumn.RelationType.OneToMany).setRelatedColumn("statement_id");
 
     public AccountBankStatement(Context context, OUser user) {
         super(context, "account.bank.statement", user);

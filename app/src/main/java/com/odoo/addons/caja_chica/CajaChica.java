@@ -11,6 +11,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.odoo.R;
@@ -19,7 +20,9 @@ import com.odoo.core.orm.ODataRow;
 import com.odoo.core.support.addons.fragment.BaseFragment;
 import com.odoo.core.support.drawer.ODrawerItem;
 import com.odoo.core.support.list.OCursorListAdapter;
+import com.odoo.core.utils.IntentUtils;
 import com.odoo.core.utils.OControls;
+import com.odoo.core.utils.OCursorUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +38,7 @@ import java.util.List;
 // TODO: 15/03/17 Ocultar de la misma forma que aqui el fabButton en framework taller777 
 
 public class CajaChica extends BaseFragment implements
-        OCursorListAdapter.OnViewBindListener, SwipeRefreshLayout.OnRefreshListener, LoaderManager.LoaderCallbacks<Cursor> {
+        OCursorListAdapter.OnViewBindListener, SwipeRefreshLayout.OnRefreshListener, LoaderManager.LoaderCallbacks<Cursor>, AdapterView.OnItemClickListener{
 
     public static final String TAG = CajaChica.class.getSimpleName();
     private OCursorListAdapter mAdapter = null;
@@ -55,6 +58,7 @@ public class CajaChica extends BaseFragment implements
         mAdapter = new OCursorListAdapter(getActivity(), null, R.layout.caja_row_item);
         mAdapter.setOnViewBindListener(this);
         mCajaList.setAdapter(mAdapter);
+        mCajaList.setOnItemClickListener(this);
         getLoaderManager().initLoader(0,null,this);
 
     }
@@ -75,6 +79,13 @@ public class CajaChica extends BaseFragment implements
     public void onViewBind(View view, Cursor cursor, ODataRow row) {
         OControls.setText(view, R.id.name, row.getString("name"));
         mView.findViewById(R.id.fabButton).setVisibility(View.GONE);
+        if(row.getString("state").equals("confirm"))
+            OControls.setTextColor(view, R.id.name, getResources().getColor(R.color.drawer_icon_tint));
+
+        if(row.getString("state").equals("open")) {
+            OControls.setTextColor(view, R.id.name, getResources().getColor(R.color.android_red_dark));
+            view.findViewById(R.id.img_caja).setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -94,13 +105,12 @@ public class CajaChica extends BaseFragment implements
         String selection= (args.size()>0) ? where : null;
         String[] selectionArgs = (args.size()>0) ? args.toArray(new String[args.size()]) : null;
         return new CursorLoader(getActivity(), db().uri(),
-                null, selection, selectionArgs, "name");
+                null, selection, selectionArgs, "date desc");
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mAdapter.changeCursor(data);
-        System.out.println(data.getCount());
         if(data.getCount()>0){
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -117,8 +127,20 @@ public class CajaChica extends BaseFragment implements
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mAdapter.changeCursor(null);
-
     }
 
+    private void loadActivity(ODataRow row){
+        Bundle data = new Bundle();
+        if (row != null){
+            data = row.getPrimaryBundleData();
+        }
+        IntentUtils.startActivity(getActivity(), CajaDetails.class, data);
+    }
 
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        System.out.println(position);
+        ODataRow row = OCursorUtils.toDatarow((Cursor) mAdapter.getItem(position));
+        loadActivity(row);
+    }
 }
